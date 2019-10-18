@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
-import sys
-import urllib2
+# import sys
+# import urllib2
 import requests
 import re
 from lxml import etree
@@ -11,9 +11,10 @@ def StringListSave(save_path, filename, slist):
     if not os.path.exists(save_path):
         os.makedirs(save_path)
     path = save_path+"/"+filename+".txt"
-    with open(path, "w+") as fp:
+    with open(path, "w+", encoding='utf-8') as fp:
         for s in slist:
-            fp.write("%s\t\t%s\n" % (s[0].encode("utf8"), s[1].encode("utf8")))
+            # fp.write("%s\t\t%s\n" % (s[0].encode("utf8"), s[1].encode("utf8")))
+            fp.write("%s\t\t%s\n" % (s[0], s[1]))
 
 def Page_Info(myPage):
     '''Regex'''
@@ -36,7 +37,7 @@ def New_Page_Info(new_page):
 
 def Spider(url):
     i = 0
-    print "downloading ", url
+    print("downloading ", url)
     myPage = requests.get(url).content.decode("gbk")
     # myPage = urllib2.urlopen(url).read().decode("gbk")
     myPageResults = Page_Info(myPage)
@@ -45,7 +46,7 @@ def Spider(url):
     StringListSave(save_path, filename, myPageResults)
     i += 1
     for item, url in myPageResults:
-        print "downloading ", url
+        print("downloading ", url)
         new_page = requests.get(url).content.decode("gbk")
         # new_page = urllib2.urlopen(url).read().decode("gbk")
         newPageResults = New_Page_Info(new_page)
@@ -55,7 +56,7 @@ def Spider(url):
 
 
 if __name__ == '__main__':
-    print "start"
+    print("start")
     start_url = "http://news.163.com/rank/"
     Spider(start_url)
-    print "end"
+    print("end")
